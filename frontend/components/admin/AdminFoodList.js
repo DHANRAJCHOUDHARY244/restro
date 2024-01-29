@@ -35,19 +35,6 @@ const AdminFoodList = ({ item }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     const token = JSON.parse(window.localStorage.getItem("token"));
-    const formData = new FormData();
-    formData.append("file", selectedImage);
-    formData.append(
-      "upload_preset",
-      `${process.env.NEXT_PUBLIC_UPLOAD_PRESET}`
-    );
-    formData.append("cloud_name", `${process.env.NEXT_PUBLIC_CLOUD_NAME}`);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_CLOUDINARY_API}`, {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await res.json();
     await axios
       .put(
         `${process.env.NEXT_PUBLIC_BASE_URL}/food/${item._id}`,
@@ -56,7 +43,7 @@ const AdminFoodList = ({ item }) => {
           category,
           cost,
           description,
-          image: data.secure_url,
+          image: selectedImage,
         },
         {
           headers: { Authorization: token },
@@ -125,17 +112,21 @@ const AdminFoodList = ({ item }) => {
                     placeholder="Description"
                   />
                   <div className="flex items-center justify-between mt-3">
-                    <label htmlFor="image">
-                      <Image className="text-green-500 text-3xl cursor-pointer" />{" "}
-                      <h1 className="text-white text-sm font-semibold mt-2 mb-3">
-                        {selectedImage.name}
+                  <label htmlFor="image">
+                      <Image className="text-3xl text-green-500 cursor-pointer" />
+                      <h1 className="mt-2 mb-3 text-sm font-semibold text-white">
+                      {selectedImage ? <img src={selectedImage} alt={selectedImage} height={'50px'} width={'50px'} /> : 'No file selected'}
                       </h1>
                     </label>
                     <input
-                      type="file"
-                      onChange={(e) => setSelectedImage(e.target.files[0])}
-                      className="opacity-0 w-48"
+                      type="text"
+                      onChange={(e) => {
+                        setSelectedImage(e.target.value)
+                        value={selectedImage}
+                      }}
+                      className="p-3 border-2 border-green-400 mt-3 bg-transparent rounded-lg outline-none font-semibold placeholder:text-sm w-full"
                       id="image"
+                    placeholder="Enter live image url"
                     />
                   </div>
                   <input

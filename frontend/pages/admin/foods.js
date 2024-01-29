@@ -17,7 +17,7 @@ const foods = ({ result }) => {
   const [category, setCategory] = useState("");
   const [cost, setCost] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState('');
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const {
@@ -29,7 +29,7 @@ const foods = ({ result }) => {
 
   useEffect(() => {
     dispatch(fetchFoods());
-  }, [data]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,20 +37,13 @@ const foods = ({ result }) => {
     const token = JSON.parse(window.localStorage.getItem('token'));
 
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('category', category);
-      formData.append('cost', cost);
-      formData.append('description', description);
-      formData.append('image', selectedImage);
+      const formData = {name,category,cost,description,image:selectedImage}
 
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/food/new`, formData, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/food/new`, {...formData}, {
         headers: {
           Authorization: token,
-          'Content-Type': 'multipart/form-data',
         },
       });
-
       setLoading(false);
       setName('');
       setCategory('');
@@ -161,18 +154,19 @@ const foods = ({ result }) => {
                   />
                   <div className="flex items-center justify-between mt-3">
                     <label htmlFor="image">
-                      <Image className="text-3xl text-green-500 cursor-pointer" />{" "}
+                      <Image className="text-3xl text-green-500 cursor-pointer" />
                       <h1 className="mt-2 mb-3 text-sm font-semibold text-white">
-                      {selectedImage ? selectedImage.name : 'No file selected'}
+                      {selectedImage ? <img src={selectedImage} alt={selectedImage} height={'50px'} width={'50px'} /> : 'No file selected'}
                       </h1>
                     </label>
                     <input
-                      type="file"
+                      type="text"
                       onChange={(e) => {
-                        setSelectedImage(e.target.files[0])
+                        setSelectedImage(e.target.value)
                       }}
-                      className="w-48 opacity-0"
+                      className="w-full p-3 mt-3 font-semibold bg-transparent border-2 border-green-400 rounded-lg outline-none placeholder:text-sm"
                       id="image"
+                    placeholder="Enter live image url"
                     />
                   </div>
                   <input

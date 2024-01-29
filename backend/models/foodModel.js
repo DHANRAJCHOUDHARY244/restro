@@ -23,8 +23,8 @@ const foodSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: Buffer, // Store binary image data
-      contentType: String, // Store the image content type (e.g., 'image/jpeg')
+      type: String,
+      trim: true,
       required: true,
     },
   },
