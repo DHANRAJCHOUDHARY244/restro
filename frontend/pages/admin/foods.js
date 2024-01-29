@@ -49,7 +49,7 @@ const foods = ({ result }) => {
       setCategory('');
       setCost('');
       setDescription('');
-      setSelectedImage(null);
+      setSelectedImage('');
       setOpenModal(false);
 
       enqueueSnackbar(response.data.message, {

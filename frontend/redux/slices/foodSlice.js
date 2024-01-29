@@ -19,5 +19,6 @@ export default foodSlice.reducer;
 export const fetchFoods = createAsyncThunk("Food/fetch", async () => {
   const res = await fetch(`http://localhost:5000/api/foods`);
   const res2 = await res.json();
+  console.log(res2);
   return res2.foods;
 });

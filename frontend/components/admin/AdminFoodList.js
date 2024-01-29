@@ -6,11 +6,11 @@ import { Modal } from "@mui/material";
 
 const AdminFoodList = ({ item }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [cost, setCost] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedImage, setSelectedImage] = useState("");
+  const [name, setName] = useState(item.name);
+  const [category, setCategory] = useState(item.category);
+  const [cost, setCost] = useState(item.cost);
+  const [description, setDescription] = useState(item.description);
+  const [selectedImage, setSelectedImage] = useState(item.image);
   const { enqueueSnackbar } = useSnackbar();
   const handleDelete = async () => {
     const token = JSON.parse(window.localStorage.getItem("token"));
@@ -120,11 +120,11 @@ const AdminFoodList = ({ item }) => {
                     </label>
                     <input
                       type="text"
+                      className="p-3 border-2 border-green-400 mt-3 bg-transparent rounded-lg outline-none font-semibold placeholder:text-sm w-full"
+                      value={selectedImage}
                       onChange={(e) => {
                         setSelectedImage(e.target.value)
-                        value={selectedImage}
                       }}
-                      className="p-3 border-2 border-green-400 mt-3 bg-transparent rounded-lg outline-none font-semibold placeholder:text-sm w-full"
                       id="image"
                     placeholder="Enter live image url"
                     />
